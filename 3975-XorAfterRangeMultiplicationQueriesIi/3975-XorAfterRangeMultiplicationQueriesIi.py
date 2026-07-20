@@ -1,0 +1,51 @@
+# Last updated: 20/07/2026, 11:24:21
+from typing import List
+import math
+from collections import defaultdict
+
+class Solution:
+    def xorAfterQueries(self, nums: List[int], queries: List[List[int]]) -> int:
+        MOD=10**9+7
+        n=len(nums)
+        if n==0: return 0
+        B=int(math.sqrt(n))+1
+        small=defaultdict(list)
+        for l,r,k,v in queries:
+            if k>=B:
+                idx=l
+                while idx<=r:
+                    nums[idx]=(nums[idx]*v)%MOD
+                    idx+=k
+            else:
+                small[k].append((l,r,v))
+        factors=[1]*n
+        for k,qlist in small.items():
+            events=[[] for _ in range(k)]
+            for l,r,v in qlist:
+                res=l%k
+                step=(r-l)//k
+                last=l+step*k
+                events[res].append((l,v))
+                end_idx=last+k
+                if end_idx<n:
+                    inv_v=pow(v,MOD-2,MOD)
+                    events[res].append((end_idx,inv_v))
+            for res in range(k):
+                ev=events[res]
+                if not ev: continue
+                ev.sort()
+                cur=1
+                ptr=0
+                m=len(ev)
+                i=res
+                while i<n:
+                    while ptr<m and ev[ptr][0]==i:
+                        cur=(cur*ev[ptr][1])%MOD
+                        ptr+=1
+                    factors[i]=(factors[i]*cur)%MOD
+                    i+=k
+        for i in range(n):
+            nums[i]=(nums[i]*factors[i])%MOD
+        ans=0
+        for x in nums: ans^=x
+        return ans
