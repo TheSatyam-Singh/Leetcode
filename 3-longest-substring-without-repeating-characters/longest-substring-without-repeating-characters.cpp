@@ -1,19 +1,25 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        vector<char>ans;
-        int l=0;
-        int mx=0;
-        for(int i=0;i<s.size();i++){
-            while (find(ans.begin(),ans.end(), s[i]) != ans.end()) {
-                ans.erase(find(ans.begin(),ans.end(),s[l]));
-                l++;
+        vector<int> lastSeen(256, -1); // Tracks the last index where each character appeared
+        int maxLength = 0;
+        int left = 0; // Left pointer of the sliding window
+
+        for (int right = 0; right < s.length(); right++) {
+            char currChar = s[right];
+
+            // If the character was seen inside the current window, move the left pointer
+            if (lastSeen[currChar] >= left) {
+                left = lastSeen[currChar] + 1;
             }
-            ans.push_back(s[i]);
-            mx=max(mx,i-l+1);
+
+            // Update last seen position of current character
+            lastSeen[currChar] = right;
+
+            // Calculate max window size
+            maxLength = max(maxLength, right - left + 1);
         }
-        return mx;
+
+        return maxLength;
     }
 };
-
-
