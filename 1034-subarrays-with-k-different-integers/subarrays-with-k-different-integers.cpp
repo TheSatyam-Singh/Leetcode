@@ -14,7 +14,7 @@ public:
                 }
                 left++;
             }
-            count += (right - left + 1);
+            count += right - left + 1;
             right++;
         }
         return count;
