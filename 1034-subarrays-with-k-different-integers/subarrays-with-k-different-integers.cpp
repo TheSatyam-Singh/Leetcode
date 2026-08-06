@@ -4,7 +4,7 @@ public:
         int l=0;
         int r=0;
         int count=0;
-        map<int,int>mp;
+        unordered_map<int,int>mp;
         while(r<nums.size()){
             mp[nums[r]]++;
             while(mp.size()>k){
