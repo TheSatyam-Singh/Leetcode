@@ -1,25 +1,26 @@
 class Solution {
 public:
-    int solve(vector<int>& arr, int k) {
-        int left = 0;
-        int right = 0;
-        int count = 0;
-        unordered_map<int, int> mp;
-        while (right < arr.size()) {
-            mp[arr[right]]++;
-            while (mp.size() > k) {
-                mp[arr[left]]--;
-                if (mp[arr[left]] == 0) {
-                    mp.erase(arr[left]);
+    int solve(vector<int>&nums, int k){
+        int l=0;
+        int r=0;
+        int count=0;
+        map<int,int>mp;
+        while(r<nums.size()){
+            mp[nums[r]]++;
+            while(mp.size()>k){
+                mp[nums[l]]--;
+                if(mp[nums[l]]==0){
+                    mp.erase(nums[l]);
                 }
-                left++;
+                l++;
             }
-            count += right - left + 1;
-            right++;
+            count+=r-l+1;
+            r++;
         }
         return count;
     }
+
     int subarraysWithKDistinct(vector<int>& nums, int k) {
-        return solve(nums, k) - solve(nums, k - 1);
+        return solve(nums,k)-solve(nums,k-1);
     }
 };
