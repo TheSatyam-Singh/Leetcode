@@ -1,24 +1,18 @@
 class Solution {
 public:
-    int dsum(int n) {
-        int sum = 0;
-        while (n > 0) {
-            sum += n % 10;
-            n /= 10;
-        }
-        return sum;
-    }
-    int sqsum(int n) {
-        int sum = 0;
+    int sum(int n) {
+        int dsum = 0;
+        int sqsum = 0;
         while (n > 0) {
             int digit = n % 10;
-            sum += digit * digit;
+            dsum += digit;
+            sqsum += digit * digit;
             n /= 10;
         }
-        return sum;
+        return sqsum - dsum;
     }
     bool checkGoodInteger(int n) {
-        if (sqsum(n) - dsum(n) >= 50) {
+        if (sum(n) >= 50) {
             return true;
         }
         return false;
